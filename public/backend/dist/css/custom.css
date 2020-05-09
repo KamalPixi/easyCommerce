@@ -1,0 +1,39 @@
+/* fro displaing search result */
+.input_result_list {
+  position: relative;
+}
+.input_result_list ul{
+  list-style: none;
+  padding: .5rem 1rem;
+  margin: 0;
+  position: absolute;
+  z-index: 10;
+  width: 100%;
+  background-color: #f2f2f2;;
+}
+.input_result_list ul li:hover {
+  cursor: pointer;
+}
+.img-add {
+  font-size:1.8rem;
+  color: #0069d9;
+}
+.img-add:hover {
+  cursor: pointer;
+}
+.img-delete {
+  font-size:1.8rem;
+  color: #dc3545;
+}
+.img-delete:hover {
+  cursor: pointer;
+}
+.card-title {
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 1rem;
+  color: #656a75;
+}
+.bg-light-green {
+  background-color: #d6fbce;
+}
