@@ -168,18 +168,21 @@ class ProductHelper {
       array_push($image_names, basename($path));
     }
 
+    // if already thumnail created then ignore
     // make thumnail of first images
-    $image = storage_path('app/public/product_images/'.$image_names[0]);
-    $destinationPath = storage_path('/app/public/product_thumbs');
+    if (empty(session()->get('product_image_thumb'))) {
+      $image = storage_path('app/public/product_images/'.$image_names[0]);
+      $destinationPath = storage_path('/app/public/product_thumbs');
 
-    $img = Image::make($image);
-    $img->resize(320, 320, function ($constraint) {
-        $constraint->aspectRatio();
-    })->save($destinationPath.'/thumb_'.$image_names[0]);
+      $img = Image::make($image);
+      $img->resize(266, 266, function ($constraint) {
+          $constraint->aspectRatio();
+      })->save($destinationPath.'/thumb_'.$image_names[0]);
+      session(['product_image_thumb' => 'thumb_'.$image_names[0]]);
+    }
 
-    // store price in session
+    // store images in session
     session(['product_images' => $image_names]);
-    session(['product_image_thumb' => 'thumb_'.$image_names[0]]);
 
     $flash_msg = [
       'class' => 'alert-success',
@@ -236,7 +239,10 @@ class ProductHelper {
       $product->sale_price = $product_price['sale_price'];
       $product->stock = $product_price['stock'];
 
-      $product->has_attribute = (int) $product_attribute['has_attribute'];
+      if (isset($product_attribute['has_attribute'])) {
+        $product->has_attribute = (int) $product_attribute['has_attribute'];
+      }
+
       $product->has_discount = (int) $product_price['has_discount'];
       $product->discount_type = $product_price['discount_type'];
 
@@ -247,9 +253,12 @@ class ProductHelper {
         $product->discount_percent = $product_price['discount_amount'];
 
       $product->is_active = (int) $request->is_active;
-      $product->meta_title = $product_seo['meta_title'];
-      $product->meta_keywords = $product_seo['meta_keywords'];
-      $product->meta_description = $product_seo['meta_description'];
+
+      if (isset($product_seo['meta_title'])) {
+        $product->meta_title = $product_seo['meta_title'];
+        $product->meta_keywords = $product_seo['meta_keywords'];
+        $product->meta_description = $product_seo['meta_description'];
+      }
       $product->save();
 
 

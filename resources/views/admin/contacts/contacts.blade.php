@@ -49,10 +49,10 @@
               <thead>
               <tr>
                   <th>#</th>
-                  <th>Name</th>
-                  <th>Subject</th>
+                  <th style="width:120px">Name</th>
+                  <th style="width:120px">Subject</th>
                   <th>Message</th>
-                  <th>Email</th>
+                  <th style="width:120px">Email</th>
                   <th>Action</th>
               </tr>
               </thead>
@@ -63,7 +63,7 @@
                       <td>{{ $contact->name }}</td>
                       <td>{{ $contact->subject }}</td>
                       <td>
-                        <textarea name="name" rows="1" cols="10" class="form-control">{{ $contact->message }}</textarea>
+                        <textarea style="width:300px" name="name" rows="1" cols="10" class="form-control">{{ $contact->message }}</textarea>
                       </td>
                       <td>{{ $contact->email }}</td>
                       <td style="width:1.5rem;">

@@ -6,22 +6,26 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\MessageBag;
+use Illuminate\Foundation\Auth\ThrottlesLogins;
 
 class AdminLoginController extends Controller
 {
 
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
+    use ThrottlesLogins;
+    public $maxAttempts = 5;
+    public $decayMinutes = 5;
+
     public function __construct(){
         //$this->middleware('guest:admin')->except('logout');
     }
 
+    // for ThrottlesLogins
+    public function username(){
+      return 'email';
+    }
+
     /* show admin login form */
     public function showLoginForm(){
-
         // if already logged in, redirect to dashboard
         if (Auth::guard('admin')->check()) {
             return redirect(route('admin.dashboard'));
@@ -40,6 +44,16 @@ class AdminLoginController extends Controller
             'password' => 'required|max:255',
         ]);
 
+
+        //check if the user has too many login attempts.
+        if ($this->hasTooManyLoginAttempts($request)){
+            //Fire the lockout event.
+            $this->fireLockoutEvent($request);
+
+            //redirect the user back after lockout.
+            return $this->sendLockoutResponse($request);
+        }
+
         // for remembering admin
         $remember = false;
         if ($request->remember) {
@@ -50,10 +64,15 @@ class AdminLoginController extends Controller
         if (Auth::guard('admin')->attempt(['email' => $validatedData['email'], 'password' => $validatedData['password']], $remember)) {
             // Authentication passed...
             return redirect(route('admin.dashboard'));
-        }else {
-            $errors = new MessageBag(['admin-login-error' => ['Email or Password is invalid.']]);
-            return redirect()->back()->withErrors($errors);
         }
+
+
+        //keep track of login attempts from the user.
+        $this->incrementLoginAttempts($request);
+
+        $errors = new MessageBag(['admin-login-error' => ['Email or Password is invalid.']]);
+        return redirect()->back()->withErrors($errors);
+
     }
 
 
