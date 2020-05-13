@@ -18,7 +18,9 @@
 
       @foreach($top_products as $top_product)
       <div class="card product-card">
-          <a class="card-img-top d-block overflow-hidden" href="@if(Route::has('product')) {{ route('product', [$top_product->slug]) }} @endif"><img src="{{ asset('storage/product_thumbs/'.$top_product->thumbnail->thumbnail) }}" alt="{{ $top_product->title ?? '' }}"></a>
+          <a class="card-img-top d-block overflow-hidden" href="@if(Route::has('product')) {{ route('product', [$top_product->slug]) }} @endif">
+            <img class="lozad" data-src="{{ asset('storage/product_thumbs/'.$top_product->thumbnail->thumbnail) }}" alt="{{ $top_product->title ?? '' }}">
+          </a>
           <div class="card-body py-2"><a class="product-meta d-block font-size-xs pb-1" href="@if(Route::has('product')) {{ route('product', [$top_product->slug]) }} @endif">{{ $top_product->category->name ?? '' }}</a>
               <h3 class="product-title font-size-sm"><a href="@if(Route::has('product')) {{ route('product', [$top_product->slug]) }} @endif">{{ $top_product->title ?? '' }}</a></h3>
               <div class="d-flex justify-content-between">

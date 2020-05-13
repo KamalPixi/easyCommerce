@@ -37,6 +37,7 @@
   </a>
   <!-- jQuery library -->
   <script src="{{ asset('frontend/js/jquery.min.js') }}"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/lozad/dist/lozad.min.js"></script>
   <!-- Popper JS -->
   <script src="{{ asset('frontend/js/popper.min.js') }}"></script>
   <!-- Latest compiled JavaScript -->

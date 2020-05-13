@@ -22,8 +22,8 @@ class CreateProductsTable extends Migration
             $table->string('slug')->unique();
             $table->longText('description');
             $table->double('buy_price')->nullable();
-            $table->double('sale_price');
-            $table->integer('stock');
+            $table->double('sale_price')->nullable();
+            $table->integer('stock')->nullable();
 
             $table->boolean('has_attribute')->default(false);
 

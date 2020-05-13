@@ -37,6 +37,7 @@
     <script src="{{ asset('backend/dist/js/adminlte.min.js') }}"></script>
     <!--to inject js -->
     @stack('js')
+    <script src="{{ asset('frontend/js/notify.min.js') }}"></script>
     <!-- Custom js -->
     <script src="{{ asset('backend/dist/js/custom.js') }}"></script>
 </body>

@@ -1,7 +1,9 @@
 // for ajax call
 function callAjax(data) {
   return $.ajax({
-      headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+       },
       url: data.url,
       type: data.type ? data.type : 'POST',
       cache: data.cache ? data.cache : false,
@@ -123,14 +125,27 @@ function saveBasic(e) {
       };
 
       $.when(callAjax(formData)).done(function(res) {
-        if (res.status) {
-          $('#flash-container').html(res.html);
-        }
-
+        $.notify(res.msg, "success");
       }).fail(function (x, textStatus, errorThrown) {
-        let e = x.responseJSON.errors;
-        if (e.sku) { return alert(e.sku[0]); }
-        if (e.slug) { return alert(e.slug[0]); }
+        let response = JSON.parse(x.responseText);
+        let errorMsgs = "";
+        response.errors.brand_id.forEach((item, i) => {
+          errorMsgs += item+"\n";
+        });
+        response.errors.category_id.forEach((item, i) => {
+          errorMsgs += item+"\n";
+        });
+        response.errors.title.forEach((item, i) => {
+          errorMsgs += item+"\n";
+        });
+        response.errors.slug.forEach((item, i) => {
+          errorMsgs += item+"\n";
+        });
+        response.errors.description.forEach((item, i) => {
+          errorMsgs += item+"\n";
+        });
+
+        $.notify(errorMsgs, "error");
       });
   }
 }
@@ -157,7 +172,29 @@ function savePrice(e) {
       };
 
       $.when(callAjax(formData)).done(function(res) {
-        if (res.status) return $('#flash-container').html(res.html);
+        $.notify(res.msg, "success");
+      }).fail(function (x, textStatus, errorThrown) {
+        let response = JSON.parse(x.responseText);
+        let errorMsgs = "";
+        response.errors.buy_price.forEach((item, i) => {
+          errorMsgs += item+"\n";
+        });
+        response.errors.sale_price.forEach((item, i) => {
+          errorMsgs += item+"\n";
+        });
+        response.errors.stock.forEach((item, i) => {
+          errorMsgs += item+"\n";
+        });
+        if (response.errors.discount_type) {
+          response.errors.discount_type.forEach((item, i) => {
+            errorMsgs += item+"\n";
+          });
+          response.errors.discount_amount.forEach((item, i) => {
+            errorMsgs += item+"\n";
+          });
+        }
+
+        $.notify(errorMsgs, "error");
       });
   }
 }
@@ -187,8 +224,9 @@ function saveAttributes(e) {
   };
 
   $.when(callAjax(formData)).done(function(res) {
-    if (res.status) return $('#flash-container').html(res.html);
-    console.log(res);
+    $.notify(res.msg, "success");
+  }).fail(function (x, textStatus, errorThrown) {
+    $.notify("Somthing wrong with attribute", "error");
   });
 
 }
@@ -211,7 +249,21 @@ function saveSEO(e) {
       };
 
       $.when(callAjax(formData)).done(function(res) {
-        if (res.status) return $('#flash-container').html(res.html);
+        $.notify(res.msg, "success");
+      }).fail(function (x, textStatus, errorThrown) {
+        let response = JSON.parse(x.responseText);
+        let errorMsgs = "";
+        response.errors.meta_title.forEach((item, i) => {
+          errorMsgs += item+"\n";
+        });
+        response.errors.meta_keywords.forEach((item, i) => {
+          errorMsgs += item+"\n";
+        });
+        response.errors.meta_description.forEach((item, i) => {
+          errorMsgs += item+"\n";
+        });
+
+        $.notify(errorMsgs, "error");
       });
   }
 }
@@ -229,12 +281,10 @@ function saveImage(e) {
     cache: false,
     processData:false,
     success: function(res){
-      $('#flash-container').html(res.html);
-      $('#upload_img_container').html(res.images);
+      $.notify(res.msg, "success");
     },
     error: function(xhr, textStatus, errorThrown){
-      let err = "<div id='flash-msg' class='alert alert-dismissible alert-danger' style='position:fixed;z-index:10000;right:0;top:10px;min-width:5rem;'><script>setTimeout(function(){ $('#flash-msg').hide() }, 5000);</script><button type='button' class='close' data-dismiss='alert' aria-hidden='true'>×</button><h5><i class='icon fas fa-check'></i>Error</h5>Somthing Wrong With Product Image!</div>";
-      $('#flash-container').html(err);
+      $.notify("Somthing wrong", "error");
     }
     });
 }

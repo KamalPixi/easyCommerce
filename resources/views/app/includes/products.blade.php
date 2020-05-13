@@ -6,7 +6,9 @@
     <div class="col-lg-3 col-md-4 col-sm-6 px-2 mb-4">
         <div class="card product-card">
             <span class="badge badge-danger badge-shadow">Sale</span>
-            <a class="card-img-top d-block overflow-hidden" href="@if(Route::has('product')) {{ route('product', [$product->slug]) }} @endif"><img src="{{ asset('storage/product_thumbs/'.$product->thumbnail->thumbnail ?? '') }}" alt="Product"></a>
+            <a class="card-img-top d-block overflow-hidden" href="@if(Route::has('product')) {{ route('product', [$product->slug]) }} @endif">
+              <img class="lozad" data-src="{{ asset('storage/product_thumbs/'.$product->thumbnail->thumbnail ?? '') }}" alt="{{ $product->title ?? 'product img' }}">
+            </a>
             <div class="card-body py-2"><a class="product-meta d-block font-size-xs pb-1" href="@if(Route::has('product')) {{ route('product', [$product->slug]) }} @endif">{{ $product->category->name ?? '' }}</a>
                 <h3 class="product-title font-size-sm"><a href="@if(Route::has('product')) {{ route('product', [$product->slug]) }} @endif">{{ $product->title ?? '' }}</a></h3>
                 <div class="d-flex justify-content-between">

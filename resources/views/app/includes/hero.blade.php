@@ -18,10 +18,10 @@
                 @if(strlen($slider->video) > 1)
                   <a href="#" class="js-video-button w-100 slider_video position-relative" data-channel="video" data-video-url="{{request()->getHttpHost()}}/{{$slider->video ?? ''}}">
                     <i class="far fa-play-circle"></i>
-                    <img src="{{ asset('storage/product_images/'.$slider->image) }}" alt="img" class="w-100">
+                    <img data-src="{{ asset('storage/product_images/'.$slider->image) }}" alt="img" class="lozad w-100">
                   </a>
                 @else
-                  <img src="{{ asset('storage/product_images/'.$slider->image) }}" alt="img" class="w-100">
+                  <img data-src="{{ asset('storage/product_images/'.$slider->image) }}" alt="img" class="lozad w-100">
                 @endif
 
                 @if($slider->title)
